@@ -512,7 +512,7 @@ loadElm.addEventListener('click', async () => {
     }
 
     console.log(saveData);
-    save();
+    sendDataToSheets([uniqueId, bakeryName, level, money, profit, all]);
 });
 
 document.getElementById('change-name').addEventListener('click', () => {
@@ -1007,7 +1007,7 @@ function buy(num) {
         }
     }
     reloadOfBuy();
-    save();
+    sendDataToSheets([uniqueId, bakeryName, level, money, profit, all]);
 }
 
 function sell(num) {
@@ -1016,7 +1016,7 @@ function sell(num) {
         buyDisplay[buyPage][3] = buyDisplay[buyPage][3] - num;
     }
     reloadOfBuy();
-    save();
+    sendDataToSheets([uniqueId, bakeryName, level, money, profit, all]);
 }
 
 function make(num) {
@@ -1054,7 +1054,7 @@ function make(num) {
     }
     
     reloadOfMake();
-    save();
+    sendDataToSheets([uniqueId, bakeryName, level, money, profit, all]);
     addMessage(makeDisplay[makePage][0] + 'を' + num + '個作った');
 }
 
