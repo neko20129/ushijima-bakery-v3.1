@@ -185,16 +185,17 @@ let upgradeDisplay = JSON.parse(localStorage.getItem('upgradeDisplay')) ?? [
 
 //ストレージ
 function save() {
-  localStorage.setItem('money',money);
-  localStorage.setItem('level',level);
-  localStorage.setItem('sold',sold);
-  localStorage.setItem('levelUp',levelUp);
-  localStorage.setItem('profit',profit);
-  localStorage.setItem('bakeryName',bakeryName);
-  localStorage.setItem('buyDisplay',JSON.stringify(buyDisplay));
-  localStorage.setItem('makeDisplay',JSON.stringify(makeDisplay));
-  localStorage.setItem('upgradeDisplay',JSON.stringify(upgradeDisplay));
-  dataForSend();
+    console.log('Saving data...');
+    localStorage.setItem('money',money);
+    localStorage.setItem('level',level);
+    localStorage.setItem('sold',sold);
+    localStorage.setItem('levelUp',levelUp);
+    localStorage.setItem('profit',profit);
+    localStorage.setItem('bakeryName',bakeryName);
+    localStorage.setItem('buyDisplay',JSON.stringify(buyDisplay));
+    localStorage.setItem('makeDisplay',JSON.stringify(makeDisplay));
+    localStorage.setItem('upgradeDisplay',JSON.stringify(upgradeDisplay));
+    dataForSend();
 }
 
 
