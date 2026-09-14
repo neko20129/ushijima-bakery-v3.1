@@ -133,16 +133,18 @@ const loadElm = document.getElementById('load');
 const moneyElm1 = document.getElementById('money1');
 const moneyElm2 = document.getElementById('money2');
 
-let money = localStorage.getItem('money') ?? 115;
-let level = localStorage.getItem('level') ?? 1;
-let sold = localStorage.getItem('sold') ?? 0;
-let levelUp = localStorage.getItem('levelUp') ?? 4;
+// 【セーブ・ロード修正】リフレッシュ時に型崩れを防ぐため、localStorageからの取得時にNumber型にキャストします
+let money = localStorage.getItem('money') !== null ? Number(localStorage.getItem('money')) : 115;
+let level = localStorage.getItem('level') !== null ? Number(localStorage.getItem('level')) : 1;
+let sold = localStorage.getItem('sold') !== null ? Number(localStorage.getItem('sold')) : 0;
+let levelUp = localStorage.getItem('levelUp') !== null ? Number(localStorage.getItem('levelUp')) : 4;
 let buyPage = 1;
 let makePage = 1;
-let profit = localStorage.getItem('profit') ?? 0; //累計利益
+let profit = localStorage.getItem('profit') !== null ? Number(localStorage.getItem('profit')) : 0; //累計利益
 
 let uniqueId;
-let bakeryName;
+// 【セーブ・ロード修正】bakeryNameの取得キーを統一（bakeryNameKey）
+let bakeryName = localStorage.getItem('bakeryNameKey');
 let all;
 
 //配列
@@ -191,7 +193,8 @@ function save() {
     localStorage.setItem('sold',sold);
     localStorage.setItem('levelUp',levelUp);
     localStorage.setItem('profit',profit);
-    localStorage.setItem('bakeryName',bakeryName);
+    // 【セーブ・ロード修正】bakeryNameの保存キー名を `bakeryNameKey` に変更・保護
+    if (bakeryName) localStorage.setItem('bakeryNameKey',bakeryName);
     localStorage.setItem('buyDisplay',JSON.stringify(buyDisplay));
     localStorage.setItem('makeDisplay',JSON.stringify(makeDisplay));
     localStorage.setItem('upgradeDisplay',JSON.stringify(upgradeDisplay));
@@ -420,6 +423,7 @@ upgradeB1.addEventListener('click', () => {
         upgradeDisplay[1][1]++;
         money = money - upgradeDisplay[1][3];
         upgradeDisplay[1][3] = Math.floor(upgradeDisplay[1][3] * 1.2);
+        save(); // 【セーブ・ロード修正】アップグレード実行時のセーブ
     }
     reloadOfUpgrade();
 });
@@ -429,6 +433,7 @@ upgradeB2.addEventListener('click', () => {
         upgradeDisplay[2][1]++;
         money = money - upgradeDisplay[2][3];
         upgradeDisplay[2][3] = Math.floor(upgradeDisplay[2][3] * 1.2)
+        save(); // 【セーブ・ロード修正】アップグレード実行時のセーブ
     }
     reloadOfUpgrade();
 });
@@ -438,6 +443,7 @@ upgradeB3.addEventListener('click', () => {
         upgradeDisplay[3][1]++;
         money = money - upgradeDisplay[3][3];
         upgradeDisplay[3][3] = Math.floor(upgradeDisplay[3][3] * 1.2)
+        save(); // 【セーブ・ロード修正】アップグレード実行時のセーブ
     }
     reloadOfUpgrade();
 });
@@ -486,11 +492,13 @@ saveElm.addEventListener('click', async () => {
     const compressed = JSON.stringify(saveData);
     await navigator.clipboard.writeText(compressed);
 
+    save(); // 【セーブ・ロード修正】クリップボードコピー時にもlocalStorageに保存
     alert('コピーしました');
 });
 
 loadElm.addEventListener('click', async () => {
     const input = prompt('セーブデータを入力');
+    if (!input) return; // 【セーブ・ロード修正】キャンセル時のエラー防ぎ
     const saveData = JSON.parse(input);
     money = saveData.money;
     level = saveData.level;
@@ -513,13 +521,15 @@ loadElm.addEventListener('click', async () => {
     }
 
     console.log(saveData);
-    sendDataToSheets([uniqueId, bakeryName, level, money, profit, all]);
+    save(); // 【セーブ・ロード修正】読み込み後にlocalStorageを更新
 });
 
 document.getElementById('change-name').addEventListener('click', () => {
     const prom = prompt('あなたのベーカリーの名前はなんですか？');
-    if (prom) bakeryName = prom;
-    sendDataToSheets([uniqueId, bakeryName, level, money, profit, all]);
+    if (prom) {
+        bakeryName = prom;
+        save(); // 【セーブ・ロード修正】名前変更時に保存
+    }
 })
 
 document.getElementById('ranking').addEventListener('click', () => {if (confirm('別のランキングページが新しいタブで開かれます\nよろしいですか？')) window.open('https://docs.google.com/spreadsheets/d/1q726CiPRmO2ZD2cUisHE-UDBfvba7ikVEhZSwUGeTEM/edit?gid=0#gid=0', '_blank', 'noopener,noreferrer')});
@@ -569,6 +579,7 @@ myWorker.onmessage = function(e) {
             sold = sold - levelUp
             levelUp = Math.floor(levelUp * 2);
             addMessage('レベルアップ！', 1)
+            save(); // 【セーブ・ロード修正】レベルアップ時に自動セーブ
         }
     }
 };
@@ -1008,7 +1019,7 @@ function buy(num) {
         }
     }
     reloadOfBuy();
-    sendDataToSheets([uniqueId, bakeryName, level, money, profit, all]);
+    save(); // 【セーブ・ロード修正】購入時のセーブ
 }
 
 function sell(num) {
@@ -1017,7 +1028,7 @@ function sell(num) {
         buyDisplay[buyPage][3] = buyDisplay[buyPage][3] - num;
     }
     reloadOfBuy();
-    sendDataToSheets([uniqueId, bakeryName, level, money, profit, all]);
+    save(); // 【セーブ・ロード修正】売却時のセーブ
 }
 
 function make(num) {
@@ -1055,7 +1066,7 @@ function make(num) {
     }
     
     reloadOfMake();
-    sendDataToSheets([uniqueId, bakeryName, level, money, profit, all]);
+    save(); // 【セーブ・ロード修正】パン作成時のセーブ
     addMessage(makeDisplay[makePage][0] + 'を' + num + '個作った');
 }
 
@@ -1142,10 +1153,13 @@ function dataForSend() {
         localStorage.setItem('uniqueId', uniqueId);
     }
 
+    // 【セーブ・ロード修正】キー名を保存時と一致（bakeryNameKey）
     bakeryName = localStorage.getItem('bakeryNameKey');
     if (!bakeryName) {
         bakeryName = prompt('【突然すみません！】\nあなたのベーカリーの名前はなんですか？\n(設定>ベーカリー名 から後で変更できます)');
-        localStorage.setItem('bakeryNameKey', bakeryName);
+        if (bakeryName) {
+            localStorage.setItem('bakeryNameKey', bakeryName);
+        }
     }
 
     let all = 0;
@@ -1157,8 +1171,9 @@ function dataForSend() {
     console.log(uniqueId + ',' + bakeryName + ',' + level + ',' + money + ',' + profit + ',' + all + 'を送信した')
 }
 
-window.dataForSend = dataForSend();
-window.clearData = clearData();
+// 【セーブ・ロード修正】関数の割り当て時の即時実行バグ `()` を除去
+window.dataForSend = dataForSend;
+window.clearData = clearData;
 window.addEventListener('load', () => {
     dataForSend();
 });
