@@ -136,7 +136,6 @@ const loadElm = document.getElementById('load');
 const moneyElm1 = document.getElementById('money1');
 const moneyElm2 = document.getElementById('money2');
 
-// 【セーブ・ロード修正】リフレッシュ時に型崩れを防ぐため、localStorageからの取得時にNumber型にキャストします
 let money = localStorage.getItem('money') !== null ? Number(localStorage.getItem('money')) : 115;
 let level = localStorage.getItem('level') !== null ? Number(localStorage.getItem('level')) : 1;
 let sold = localStorage.getItem('sold') !== null ? Number(localStorage.getItem('sold')) : 0;
@@ -146,7 +145,6 @@ let makePage = 1;
 let profit = localStorage.getItem('profit') !== null ? Number(localStorage.getItem('profit')) : 0; //累計利益
 
 let uniqueId;
-// 【セーブ・ロード修正】bakeryNameの取得キーを統一（bakeryNameKey）
 let bakeryName = localStorage.getItem('bakeryNameKey');
 let all;
 
@@ -196,7 +194,6 @@ function save() {
     localStorage.setItem('sold',sold);
     localStorage.setItem('levelUp',levelUp);
     localStorage.setItem('profit',profit);
-    // 【セーブ・ロード修正】bakeryNameの保存キー名を `bakeryNameKey` に変更・保護
     if (bakeryName) localStorage.setItem('bakeryNameKey',bakeryName);
     localStorage.setItem('buyDisplay',JSON.stringify(buyDisplay));
     localStorage.setItem('makeDisplay',JSON.stringify(makeDisplay));
@@ -426,7 +423,7 @@ upgradeB1.addEventListener('click', () => {
         upgradeDisplay[1][1]++;
         money = money - upgradeDisplay[1][3];
         upgradeDisplay[1][3] = Math.floor(upgradeDisplay[1][3] * 1.2);
-        save(); // 【セーブ・ロード修正】アップグレード実行時のセーブ
+        save();
     }
     reloadOfUpgrade();
 });
@@ -436,7 +433,7 @@ upgradeB2.addEventListener('click', () => {
         upgradeDisplay[2][1]++;
         money = money - upgradeDisplay[2][3];
         upgradeDisplay[2][3] = Math.floor(upgradeDisplay[2][3] * 1.2)
-        save(); // 【セーブ・ロード修正】アップグレード実行時のセーブ
+        save();
     }
     reloadOfUpgrade();
 });
@@ -446,7 +443,7 @@ upgradeB3.addEventListener('click', () => {
         upgradeDisplay[3][1]++;
         money = money - upgradeDisplay[3][3];
         upgradeDisplay[3][3] = Math.floor(upgradeDisplay[3][3] * 1.2)
-        save(); // 【セーブ・ロード修正】アップグレード実行時のセーブ
+        save();
     }
     reloadOfUpgrade();
 });
@@ -495,13 +492,13 @@ saveElm.addEventListener('click', async () => {
     const compressed = JSON.stringify(saveData);
     await navigator.clipboard.writeText(compressed);
 
-    save(); // 【セーブ・ロード修正】クリップボードコピー時にもlocalStorageに保存
+    save();
     alert('コピーしました');
 });
 
 loadElm.addEventListener('click', async () => {
     const input = prompt('セーブデータを入力');
-    if (!input) return; // 【セーブ・ロード修正】キャンセル時のエラー防ぎ
+    if (!input) return;
     const saveData = JSON.parse(input);
     money = saveData.money;
     level = saveData.level;
@@ -548,14 +545,14 @@ loadElm.addEventListener('click', async () => {
     }
 
     console.log(saveData);
-    save(); // 【セーブ・ロード修正】読み込み後にlocalStorageを更新
+    save();
 });
 
 document.getElementById('change-name').addEventListener('click', () => {
     const prom = prompt('あなたのベーカリーの名前はなんですか？');
     if (prom) {
         bakeryName = prom;
-        save(); // 【セーブ・ロード修正】名前変更時に保存
+        save();
     }
 })
 
@@ -606,7 +603,7 @@ myWorker.onmessage = function(e) {
             sold = sold - levelUp
             levelUp = Math.floor(levelUp * 2);
             addMessage('レベルアップ！', 1)
-            save(); // 【セーブ・ロード修正】レベルアップ時に自動セーブ
+            save();
         }
     }
 };
@@ -1057,7 +1054,7 @@ function buy(num) {
         }
     }
     reloadOfBuy();
-    save(); // 【セーブ・ロード修正】購入時のセーブ
+    save();
 }
 
 function sell(num) {
@@ -1066,7 +1063,7 @@ function sell(num) {
         buyDisplay[buyPage][3] = buyDisplay[buyPage][3] - num;
     }
     reloadOfBuy();
-    save(); // 【セーブ・ロード修正】売却時のセーブ
+    save();
 }
 
 function make(num) {
@@ -1104,7 +1101,7 @@ function make(num) {
     }
     
     reloadOfMake();
-    save(); // 【セーブ・ロード修正】パン作成時のセーブ
+    save();
     addMessage(makeDisplay[makePage][0] + 'を' + num + '個作った');
 }
 
@@ -1191,7 +1188,6 @@ function dataForSend() {
         localStorage.setItem('uniqueId', uniqueId);
     }
 
-    // 【セーブ・ロード修正】キー名を保存時と一致（bakeryNameKey）
     bakeryName = localStorage.getItem('bakeryNameKey');
     if (!bakeryName) {
         bakeryName = prompt('【突然すみません！】\nあなたのベーカリーの名前はなんですか？\n(設定>ベーカリー名 から後で変更できます)');
@@ -1209,7 +1205,6 @@ function dataForSend() {
     console.log(uniqueId + ',' + bakeryName + ',' + level + ',' + money + ',' + profit + ',' + all + 'を送信した')
 }
 
-// 【セーブ・ロード修正】関数の割り当て時の即時実行バグ `()` を除去
 window.dataForSend = dataForSend;
 window.clearData = clearData;
 window.addEventListener('load', () => {
