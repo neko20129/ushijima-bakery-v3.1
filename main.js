@@ -1,4 +1,4 @@
-console.log('これは ofline-version v3.2 -- v0.0bata です');
+console.log('これは v4.0 です');
 
 (function () {
 const log = document.getElementById('log-range');
@@ -16,6 +16,7 @@ const table1_6_elm = document.getElementById('table1-6_elm');
 const table1_7_elm = document.getElementById('table1-7_elm');
 const table1_8_elm = document.getElementById('table1-8_elm');
 const table1_9_elm = document.getElementById('table1-9_elm');
+const table1_10_elm = document.getElementById('table1-10_elm');
 
 const table1_1_name = document.getElementById('table1-1_name');
 const table1_2_name = document.getElementById('table1-2_name');
@@ -26,6 +27,7 @@ const table1_6_name = document.getElementById('table1-6_name');
 const table1_7_name = document.getElementById('table1-7_name');
 const table1_8_name = document.getElementById('table1-8_name');
 const table1_9_name = document.getElementById('table1-9_name');
+const table1_10_name = document.getElementById('table1-10_name');
 
 const table1_1_num = document.getElementById('table1-1_num');
 const table1_2_num = document.getElementById('table1-2_num');
@@ -36,6 +38,7 @@ const table1_6_num = document.getElementById('table1-6_num');
 const table1_7_num = document.getElementById('table1-7_num');
 const table1_8_num = document.getElementById('table1-8_num');
 const table1_9_num = document.getElementById('table1-9_num');
+const table1_10_num = document.getElementById('table1-10_num');
 
 const table2_1_elm = document.getElementById('table2-1_elm');
 const table2_2_elm = document.getElementById('table2-2_elm');
@@ -787,6 +790,17 @@ function reloadOfChangeTub() {
         table1_9_elm.style.display = 'none';
     }
 
+    if (buyDisplay[10]) {
+        if (buyDisplay[10][4] <= level) {
+            table1_10_name.textContent = buyDisplay[10][0];
+            table1_10_num.textContent = buyDisplay[10][3];
+            table1_10_elm.style.display = '';
+        } else {
+            table1_10_elm.style.display = 'none';
+        }
+    } else {
+        table1_10_elm.style.display = 'none';
+    }
 
     if (makeDisplay[1]) {
         if (makeDisplay[1][7] <= level) {
