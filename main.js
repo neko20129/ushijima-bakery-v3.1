@@ -508,12 +508,36 @@ loadElm.addEventListener('click', async () => {
     const makeDispHas = saveData.makeDispHas;
     const upgradeDispHas = saveData.upgradeDispHas;
 
-    for (let i = 1; i <= buyDisplay.length - 1; i++) {
+    if (buyDispHas.length < buyDisplay.length - 1) {
+        while (buyDispHas.length < buyDisplay.length - 1) {
+            buyDispHas.push(0);
+        }
+    } else if (buyDispHas.length > buyDisplay.length - 1) {
+        buyDispHas = buyDispHas.slice(0, buyDisplay.length - 1);
+    }
+
+    for (let i = 1; i <= buyDisplay.length - 1; i++) { 
         buyDisplay[i][3] = buyDisplay[i][3] ? buyDispHas[i - 1] : 0;
+    }
+
+    if (makeDispHas.length < makeDisplay.length - 1) {
+        while (makeDispHas.length < makeDisplay.length - 1) {
+            makeDispHas.push(0);
+        }
+    } else if (makeDispHas.length > makeDisplay.length - 1) {
+        makeDispHas = makeDispHas.slice(0, makeDisplay.length - 1);
     }
 
     for (let i = 1; i <= makeDisplay.length - 1; i++) {
         makeDisplay[i][6] = makeDisplay[i][6] ? makeDispHas[i - 1] : 0;
+    }
+
+    if (upgradeDispHas.length < upgradeDisplay.length - 1) {
+        while (upgradeDispHas.length < upgradeDisplay.length - 1) {
+            upgradeDispHas.push(0);
+        }
+    } else if (upgradeDispHas.length > upgradeDisplay.length - 1) {
+        upgradeDispHas = upgradeDispHas.slice(0, upgradeDisplay.length - 1);
     }
 
     for (let i = 1; i <= upgradeDisplay.length - 1; i++) {
