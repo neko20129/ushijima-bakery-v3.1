@@ -1,5 +1,5 @@
-https://neko20129.github.io/ushijima-bakery-v3.1/
-https://x.gd/ushijimapanya
+https://neko20129.github.io/ushijima-bakery-v3.2/
+https://x.gd/ushijimapan
 
 現在の最新バージョンは ver.3.1です
 
@@ -68,4 +68,13 @@ Download: https://x.gd/ushijimapanya
 ･新しいパンを2種類追加しました
 
 6月 17日 ver.3.1 画像をあらかじめ読み込んでおくプログラムを追加しました
-)
+
+9月 15日 ver.4.0 
+
+･ランキング機能を追加しました
+･ランキングがプレイヤーIDでソートされるバグを修正しました
+･画像が稀に読み込まれないバグを修正しました
+･セーブ機能が不完全であるバグを修正しました
+･名前変更の設定を追加しました
+･ロードのプログラムを変更しました
+･コードをスコープしてコンソールから変数の変更ができなくなりました
